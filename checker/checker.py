@@ -1,5 +1,6 @@
 import requests
 import concurrent.futures
+from datetime import datetime
 
 def check_proxy(proxy):
     url = "http://www.google.com"
@@ -23,6 +24,17 @@ def check_proxy_wrapper(proxy):
     status = "Alive" if result else "Dead"
     response_time_str = f"{response_time:.4f} ms" if response_time else "N/A"
     print(f"Proxy: {proxy} - Status: {status} - Response Time: {response_time_str}")
+
+    if result:
+        save_working_proxy(proxy)
+
+def save_working_proxy(proxy):
+    current_date = datetime.now().strftime("%Y%m%d")
+    filename = f"working_{current_date}.txt"
+
+    with open(filename, "a") as file:
+        file.write(f"{proxy}\n")
+    print(f"Working proxy saved in {filename}")
 
 if __name__ == "__main__":
     import time
